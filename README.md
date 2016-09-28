@@ -17,3 +17,7 @@ para trabajar en el TP
 2. Entrar al directorio y hacer: 
  $ git remote add docentes https://git.exactas.uba.ar/ltaravilse/algo1-tpi
 3. Luego $ git pull docentes master
+4. (Opcional) Desde CLion, ir a File -> Import Project, "Open Project".
+ Una vez que termina la carga del proyecto, para correr los tests, 
+ elegir "correrTests" desde la esquina superior derecha y 
+ hacer click en el botón Play.
