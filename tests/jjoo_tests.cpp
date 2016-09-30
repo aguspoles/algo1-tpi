@@ -2,15 +2,10 @@
 #include <algorithm>
 
 #include "../include/atleta.h"
-#define private public
 #include "../include/jjoo.h"
 
 #include "auxiliares_tests.h"
 
-//Ignorar el error en esta funcion (es un problema de la IDE)
-std::vector<std::vector<Competencia>> &obtener_cronograma(JJOO &jo) {
-    return jo._cronograma;
-}
 
 TEST(jjoo_tests, observadores_muestran_lo_construido) {
     std::vector<Atleta> atletas;
@@ -99,7 +94,7 @@ TEST(jjoo_tests, competencias_al_transcurrir_un_dia) {
     ASSERT_TRUE(mismos(otro_jo.competencias(), {comp}));
     ASSERT_TRUE(mismos(otro_jo.atletas(), atletas));
 
-    obtener_cronograma(otro_jo)[0][0].finalizar({0, 2, 1}, {});
+    otro_jo._cronograma[0][0].finalizar({0, 2, 1}, {});
     otro_jo.transcurrirDia();
     comp.finalizar({0, 2, 1}, {});
 
@@ -163,9 +158,9 @@ TEST(jjoo_tests, competencias_al_transcurrir_dos_dias) {
                                               {2, true}}); //Como los atletas 0 y 2 tienen dopping positivo, el ganador de la medalla de oro es el atleta 1 con capacidad 0 -> steven!
     comp_dos_primer_dia.finalizar({3, 1, 0}, {{0, false}});
 
-    obtener_cronograma(jo)[0][0].finalizar({0, 2, 1}, {{0, true},
-                                                       {2, true}});
-    obtener_cronograma(jo)[0][1].finalizar({3, 1, 0}, {{0, false}});
+    jo._cronograma[0][0].finalizar({0, 2, 1}, {{0, true},
+                                               {2, true}});
+    jo._cronograma[0][1].finalizar({3, 1, 0}, {{0, false}});
 
     //ASSERT_EQ(comp_uno_primer_dia.ranking(), {0,2,1});
     comp_uno_primer_dia.sancionarTramposos();
@@ -178,8 +173,8 @@ TEST(jjoo_tests, competencias_al_transcurrir_dos_dias) {
 
     comp_uno_segundo_dia.finalizar({}, {});
     comp_dos_segundo_dia.finalizar({0, 1}, {});
-    obtener_cronograma(jo)[1][0].finalizar({}, {});
-    obtener_cronograma(jo)[1][1].finalizar({0, 1}, {});
+    jo._cronograma[1][0].finalizar({}, {});
+    jo._cronograma[1][1].finalizar({0, 1}, {});
 
 
     jo.transcurrirDia();
@@ -231,34 +226,34 @@ TEST(jjoo_tests, sequias_olimpicas_y_los_mas_fracasados) {
     JJOO jo = JJOO(1920, atletas_para_el_juego, cronograma);
 
     //Sequia: 0 - 0 - 0
-    obtener_cronograma(jo)[0][0].finalizar({0}, {});
+    jo._cronograma[0][0].finalizar({0}, {});
     jo.transcurrirDia();//Sequia: 1 - 2 - 2
     ASSERT_TRUE(mismos(jo.sequiaOlimpica(), {paises[1], paises[2]}));
 
-    obtener_cronograma(jo)[1][0].finalizar({0}, {});
+    jo._cronograma[1][0].finalizar({0}, {});
     jo.transcurrirDia();//Sequia: 1 - 3 - 3
     ASSERT_TRUE(mismos(jo.sequiaOlimpica(), {paises[1], paises[2]}));
 
-    obtener_cronograma(jo)[2][0].finalizar({1}, {});
+    jo._cronograma[2][0].finalizar({1}, {});
     jo.transcurrirDia();//Sequia: 2 - 1 - 4
     ASSERT_TRUE(mismos(jo.sequiaOlimpica(), {paises[2]}));
-    obtener_cronograma(jo)[3][0].finalizar({1}, {});
+    jo._cronograma[3][0].finalizar({1}, {});
     jo.transcurrirDia();//Sequia: 3 - 1 - 5
-    obtener_cronograma(jo)[4][0].finalizar({1}, {});
+    jo._cronograma[4][0].finalizar({1}, {});
     jo.transcurrirDia();//Sequia: 4 - 1 - 6
     ASSERT_TRUE(mismos(jo.sequiaOlimpica(), {paises[2]}));
 
-    obtener_cronograma(jo)[5][0].finalizar({2}, {});
+    jo._cronograma[5][0].finalizar({2}, {});
     jo.transcurrirDia();//Sequia: 5 - 2 - 1
-    obtener_cronograma(jo)[6][0].finalizar({1}, {});
+    jo._cronograma[6][0].finalizar({1}, {});
     jo.transcurrirDia();//Sequia: 6 - 1 - 2
     ASSERT_TRUE(mismos(jo.sequiaOlimpica(), {paises[0], paises[2]}));
 
-    obtener_cronograma(jo)[7][0].finalizar({0}, {});
+    jo._cronograma[7][0].finalizar({0}, {});
     jo.transcurrirDia();//Sequia: 1 - 2 - 3
-    obtener_cronograma(jo)[8][0].finalizar({1}, {});
+    jo._cronograma[8][0].finalizar({1}, {});
     jo.transcurrirDia();//Sequia: 2 - 1 - 4
-    obtener_cronograma(jo)[9][0].finalizar({0}, {});
+    jo._cronograma[9][0].finalizar({0}, {});
     jo.transcurrirDia();//Sequia: 1 - 2 - 5
     ASSERT_TRUE(mismos(jo.sequiaOlimpica(), {paises[0], paises[2]}));
 
@@ -289,27 +284,27 @@ TEST(jjoo_tests, hay_un_patron) {
 
     JJOO jo = JJOO(1920, atletas, cronograma);
 
-    obtener_cronograma(jo)[0][0].finalizar({0}, {});
+    jo._cronograma[0][0].finalizar({0}, {});
     jo.transcurrirDia();
-    obtener_cronograma(jo)[1][0].finalizar({1}, {});
+    jo._cronograma[1][0].finalizar({1}, {});
     jo.transcurrirDia();
-    obtener_cronograma(jo)[2][0].finalizar({2}, {});
-    jo.transcurrirDia();
-    ASSERT_TRUE(jo.uyOrdenadoAsiHayUnPatron());
-    obtener_cronograma(jo)[3][0].finalizar({0}, {});
-    jo.transcurrirDia();
-    obtener_cronograma(jo)[4][0].finalizar({1}, {});
+    jo._cronograma[2][0].finalizar({2}, {});
     jo.transcurrirDia();
     ASSERT_TRUE(jo.uyOrdenadoAsiHayUnPatron());
-    obtener_cronograma(jo)[5][0].finalizar({2}, {});
+    jo._cronograma[3][0].finalizar({0}, {});
     jo.transcurrirDia();
-    obtener_cronograma(jo)[6][0].finalizar({0}, {});
+    jo._cronograma[4][0].finalizar({1}, {});
     jo.transcurrirDia();
-    obtener_cronograma(jo)[7][0].finalizar({1}, {});
+    ASSERT_TRUE(jo.uyOrdenadoAsiHayUnPatron());
+    jo._cronograma[5][0].finalizar({2}, {});
     jo.transcurrirDia();
-    obtener_cronograma(jo)[8][0].finalizar({2}, {});
+    jo._cronograma[6][0].finalizar({0}, {});
     jo.transcurrirDia();
-    obtener_cronograma(jo)[9][0].finalizar({0}, {});
+    jo._cronograma[7][0].finalizar({1}, {});
+    jo.transcurrirDia();
+    jo._cronograma[8][0].finalizar({2}, {});
+    jo.transcurrirDia();
+    jo._cronograma[9][0].finalizar({0}, {});
     jo.transcurrirDia();
     ASSERT_TRUE(jo.uyOrdenadoAsiHayUnPatron());
     vector<pair<Pais, vector<int> > > medallero = {std::make_pair(paises[0], (std::vector<int>) {5, 0, 0}),
