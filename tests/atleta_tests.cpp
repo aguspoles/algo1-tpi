@@ -2,7 +2,7 @@
 
 #include "../include/atleta.h"
 
-TEST(atleta_tests, observadores_de_atleta_sin_deportes) {
+TEST(atleta_tests, observadores_de_atleta_solo_tenis) {
     Atleta atleta("Nole", Genero::Masculino, 1983, "Serbia", 5);
 
     //Tests observadores del tipo Atleta
@@ -11,4 +11,6 @@ TEST(atleta_tests, observadores_de_atleta_sin_deportes) {
     ASSERT_EQ(1983, atleta.anioNacimiento());
     ASSERT_EQ("Serbia", atleta.nacionalidad());
     ASSERT_EQ(5, atleta.ciaNumber());
+    vector<Deporte> deportesDeNole(1,"Tenis");
+    ASSERT_EQ(deportesDeNole, atleta.deportes());
 }

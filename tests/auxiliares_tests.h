@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "../include/competencia.h"
 
-static std::vector<Pais> deportes = {
+static std::vector<Deporte> deportes = {
         "BMX",
         "Ciclismo",
         "Esgrima",
@@ -18,6 +18,7 @@ static std::vector<Pais> deportes = {
         "Pentatlon moderno",
         "Remo",
         "Skateboarding",
+        "Tenis",
         "Tiro olimpico",
         "Triatlon",
         "Vela",
