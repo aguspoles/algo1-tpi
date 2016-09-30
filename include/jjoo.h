@@ -51,6 +51,8 @@ public:
 
     bool operator==(const JJOO &j) const;
 
+    JJOO operator=(const JJOO &j);
+
     //Entrada y salida
     void mostrar(std::ostream &os) const;
 
