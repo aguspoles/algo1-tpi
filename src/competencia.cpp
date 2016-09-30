@@ -72,6 +72,6 @@ Competencia Competencia::operator=(const Competencia &c) {
     _participantes = c._participantes;
     _finalizada = c._finalizada;
     _ranking = c._ranking;
-    _lesTocoControlAntiDoping = c._lesTocoControlAntiDoping; 
+    _lesTocoControlAntiDoping = c._lesTocoControlAntiDoping;
     return (*this);
 }
