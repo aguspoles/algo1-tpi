@@ -102,7 +102,7 @@ bool JJOO::operator==(const JJOO &j) const {
 JJOO JJOO::operator=(const JJOO &j) {
     _anio = j._anio;
     _atletas = j._atletas;
-    _cronongrama = j._cronograma;
+    _cronograma = j._cronograma;
     _jornadaActual = j._jornadaActual;
     return (*this);
 }
