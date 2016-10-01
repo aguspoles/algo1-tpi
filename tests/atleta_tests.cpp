@@ -70,14 +70,14 @@ TEST(atleta_tests, igualdad_de_atleta_con_deportes) {
     otro_atleta_igual.entrenarNuevoDeporte(deportes[5], 80);
 
     //otro_segundo_atleta_distinto entrena los mismos deportes, pero solo dos
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[3], 50);
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[1], 20);
+    otro_atleta_distinto.entrenarNuevoDeporte(deportes[3], 50);
+    otro_atleta_distinto.entrenarNuevoDeporte(deportes[1], 20);
 
     //otro_atleta_distinto entrena los mismos deportes con distintas capacidades
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[3], 51);
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[1], 21);
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[8], 100);
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[5], 80);
+    otro_segundo_atleta_distinto.entrenarNuevoDeporte(deportes[3], 51);
+    otro_segundo_atleta_distinto.entrenarNuevoDeporte(deportes[1], 21);
+    otro_segundo_atleta_distinto.entrenarNuevoDeporte(deportes[8], 100);
+    otro_segundo_atleta_distinto.entrenarNuevoDeporte(deportes[5], 80);
 
     ASSERT_EQ(atleta, otro_atleta_igual);
     ASSERT_FALSE(atleta == otro_atleta_distinto);
