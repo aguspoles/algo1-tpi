@@ -51,7 +51,7 @@ void quitar(std::vector<T> &v, int index) {
 
 template<class T>
 bool mismos(const vector<T> &l1, const vector<T> &l2) {
-    bool todos_iguales = false;
+    bool todos_iguales = true;
     for(const auto &e: l1) {
         int c1 = std::count(l1.begin(), l1.end(), e);
         int c2 = std::count(l2.begin(), l2.end(), e);
@@ -61,7 +61,6 @@ bool mismos(const vector<T> &l1, const vector<T> &l2) {
 
     return (l1.size() == l2.size()) && todos_iguales;
 }
-
 
 template<class T>
 bool pertenece(const std::vector<T> &v, const T &e) {
