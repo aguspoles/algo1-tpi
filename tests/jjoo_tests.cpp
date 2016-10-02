@@ -7,8 +7,7 @@
 #include "auxiliares_tests.h"
 
 
-TEST(jjoo_tests, observadores_de_jjoo_sin_atletas_ni_competencias)
-{
+TEST(jjoo_tests, observadores_de_jjoo_sin_atletas_ni_competencias) {
     std::vector<Atleta> atletas;
     JJOO jo = JJOO(2016, {}, {{}});
 
@@ -21,26 +20,26 @@ TEST(jjoo_tests, observadores_de_jjoo_sin_atletas_ni_competencias)
     ASSERT_TRUE(jo.competencias().empty());
 }
 
-TEST(jjoo_tests, observador_competencias)
-{
+TEST(jjoo_tests, observador_competencias) {
     std::vector<Atleta> atletas;
-    atletas.emplace_back(paises[0]+std::to_string(0), Genero::Femenino, 1620, paises[0], atletas.size() );
+    atletas.emplace_back(paises[0] + std::to_string(0), Genero::Femenino, 1620, paises[0], atletas.size());
 
     std::vector<std::vector<Competencia>> cronograma(3);
 
     std::vector<Competencia> competencias;
-    for(int i = 0; i < 6; i++) {
+    for (int i = 0; i < 6; i++) {
         atletas[0].entrenarNuevoDeporte(deportes[1], 50);
     }
 
-    for(int i = 0; i < 6; i++) {
-        if(i%2) cronograma[i/2] = {Competencia(deportes[i-1], Genero::Femenino, atletas), Competencia(deportes[i], Genero::Femenino, atletas)};
+    for (int i = 0; i < 6; i++) {
+        if (i % 2)
+            cronograma[i / 2] = {Competencia(deportes[i - 1], Genero::Femenino, atletas),
+                                 Competencia(deportes[i], Genero::Femenino, atletas)};
         competencias.emplace_back(deportes[i], Genero::Femenino, atletas);
     }
 
 
     JJOO jo = JJOO(2016, atletas, cronograma);
-
 
 
     ASSERT_EQ(2016, jo.anio());
@@ -53,16 +52,15 @@ TEST(jjoo_tests, observador_competencias)
     ASSERT_TRUE(mismos(jo.competencias(), competencias));
 }
 
-TEST(jjoo_tests, competencias_al_transcurrir_un_dia)
-{
+TEST(jjoo_tests, competencias_al_transcurrir_un_dia) {
     //Test dos paises y una competencia
     std::vector<Atleta> atletas;
 
-    atletas.emplace_back(paises[0]+std::to_string(0), Genero::Masculino, 1620, paises[0], atletas.size() );
-    atletas.emplace_back(paises[0]+std::to_string(1), Genero::Masculino, 1620, paises[0], atletas.size() );
+    atletas.emplace_back(paises[0] + std::to_string(0), Genero::Masculino, 1620, paises[0], atletas.size());
+    atletas.emplace_back(paises[0] + std::to_string(1), Genero::Masculino, 1620, paises[0], atletas.size());
 
-    atletas.emplace_back(paises[1]+std::to_string(0), Genero::Masculino, 1620, paises[1], atletas.size() );
-    atletas.emplace_back(paises[1]+std::to_string(1), Genero::Masculino, 1620, paises[1], atletas.size() );
+    atletas.emplace_back(paises[1] + std::to_string(0), Genero::Masculino, 1620, paises[1], atletas.size());
+    atletas.emplace_back(paises[1] + std::to_string(1), Genero::Masculino, 1620, paises[1], atletas.size());
 
     atletas[0].entrenarNuevoDeporte(deportes[0], 100);
     atletas[0].entrenarNuevoDeporte(deportes[1], 50);
@@ -103,15 +101,16 @@ TEST(jjoo_tests, competencias_al_transcurrir_un_dia)
     ASSERT_TRUE(mismos(otro_jo.competencias(), {comp}));
     ASSERT_TRUE(mismos(otro_jo.atletas(), atletas));
 
-    otro_jo._cronograma[0][0].finalizar({0,2,1},{});
+    otro_jo._cronograma[0][0].finalizar({0, 2, 1}, {});
     otro_jo.transcurrirDia();
-    comp.finalizar({0,2,1},{});
+    comp.finalizar({0, 2, 1}, {});
 
     ASSERT_TRUE(mismos(otro_jo.competencias(), {comp}));
     ASSERT_TRUE(mismos(otro_jo.atletas(), atletas));
     ASSERT_EQ(otro_jo.jornadaActual(), 2);
     ASSERT_TRUE(mismos(otro_jo.competenciasFinalizadasConOroEnPodio(), {comp}));
-    if (otro_jo.competenciasFinalizadasConOroEnPodio().size()==1) ASSERT_TRUE(finaliza_correctamente(otro_jo.competenciasFinalizadasConOroEnPodio()[0]));
+    if (otro_jo.competenciasFinalizadasConOroEnPodio().size() == 1)
+        ASSERT_TRUE(finaliza_correctamente(otro_jo.competenciasFinalizadasConOroEnPodio()[0]));
     ASSERT_TRUE(mismos(otro_jo.dePaseo(), {atletas[3]}));
 }
 
@@ -155,7 +154,7 @@ TEST(jjoo_tests, competencias_al_transcurrir_dos_dias) {
     Competencia comp_dos_segundo_dia = Competencia(deportes[3], Genero::Masculino, participantes_cuarta);
 
 
-    JJOO jo = JJOO(2016, atletas, {{comp_uno_primer_dia,  comp_dos_primer_dia},
+    JJOO jo = JJOO(2016, atletas, {{comp_uno_primer_dia, comp_dos_primer_dia},
                                    {comp_uno_segundo_dia, comp_dos_segundo_dia}});
 
     ASSERT_TRUE(mismos(jo.competencias(),
@@ -269,7 +268,7 @@ TEST(jjoo_tests, sequias_olimpicas_y_los_mas_fracasados) {
     ASSERT_TRUE(mismos(jo.sequiaOlimpica(), {paises[0], paises[2]}));
 
 
-    ASSERT_TRUE(mismos(jo.dePaseo(),{atletas_para_el_juego[3]}));
+    ASSERT_TRUE(mismos(jo.dePaseo(), {atletas_para_el_juego[3]}));
 }
 
 
@@ -338,27 +337,27 @@ TEST(jjoo_tests, hay_un_patron) {
 
     ASSERT_TRUE(jo.medallero() == medallero);
 
-    ASSERT_TRUE(jo.uyOrdenadoAsiHayUnPatron()); //En la cuarta fecha nadie gano nada y lexicograficamente Argentina deberia quedar primera
+    ASSERT_TRUE(
+            jo.uyOrdenadoAsiHayUnPatron()); //En la cuarta fecha nadie gano nada y lexicograficamente Argentina deberia quedar primera
 
 }
 
-TEST(jjoo_tests, liu_song)
-{
+TEST(jjoo_tests, liu_song) {
     std::vector<Atleta> atletas;
-    atletas.emplace_back("liu song", Genero::Masculino, 1620, paises[0], atletas.size() );
+    atletas.emplace_back("liu song", Genero::Masculino, 1620, paises[0], atletas.size());
     atletas[0].entrenarNuevoDeporte(deportes[0], 50);
-    Competencia comp = Competencia(deportes[0],Genero::Masculino, atletas);
+    Competencia comp = Competencia(deportes[0], Genero::Masculino, atletas);
 
     std::vector<std::vector<Competencia>> cronograma = {{comp}};
     JJOO jo = JJOO(2016, atletas, cronograma);
 
     ASSERT_EQ(cronograma, jo._cronograma);
 
-    jo._cronograma[0][0].finalizar({0},{});
+    jo._cronograma[0][0].finalizar({0}, {});
 
-    ASSERT_TRUE(mismos( jo.medallero(), {{paises[0],{1,0,0}}} ));
+    ASSERT_TRUE(mismos(jo.medallero(), {{paises[0], {1, 0, 0}}}));
 
     jo.liuSong(atletas[0], paises[1]);
 
-    ASSERT_TRUE(mismos(jo.medallero(), {{paises[1],{1,0,0}}}));
+    ASSERT_TRUE(mismos(jo.medallero(), {{paises[1], {1, 0, 0}}}));
 }

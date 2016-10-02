@@ -15,9 +15,13 @@ private:
     int _jornadaActual;
 
     friend class jjoo_tests_competencias_al_transcurrir_un_dia_Test;
+
     friend class jjoo_tests_competencias_al_transcurrir_dos_dias_Test;
+
     friend class jjoo_tests_sequias_olimpicas_y_los_mas_fracasados_Test;
+
     friend class jjoo_tests_hay_un_patron_Test;
+
     friend class jjoo_tests_liu_song_Test;
 
 public:
