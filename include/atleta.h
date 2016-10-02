@@ -15,6 +15,9 @@ private:
     Genero _genero;
     vector<pair<Deporte, int> > _deportes;
 
+    //auxiliares
+    void ordenar(vector<pair<Deporte,int>> &vs);
+
 public:
     Atleta(const string &n, const Genero &g, const int &a, const Pais &p, const int &c);
 
@@ -50,6 +53,6 @@ public:
 
 std::ostream &operator<<(std::ostream &os, const Atleta &a);
 
-std::ostream &operator>>(std::ostream &os, const Atleta &a);
+std::ostream &operator>>(std::ostream &is, const Atleta &a);
 
 #endif /*__ATLETA__*/
