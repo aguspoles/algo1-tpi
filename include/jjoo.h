@@ -73,6 +73,6 @@ public:
 
 std::ostream &operator<<(std::ostream &os, const JJOO &j);
 
-std::ostream &operator>>(std::ostream &os, const JJOO &j);
+std::istream &operator>>(std::istream &is, const JJOO &j);
 
 #endif /*__JJOO__*/
