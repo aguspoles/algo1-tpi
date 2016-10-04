@@ -22,7 +22,7 @@ TEST(atleta_tests, observador_deportes) {
     atleta.entrenarNuevoDeporte(deportes[1], 90);
     atleta.entrenarNuevoDeporte(deportes[2], 99);
 
-    std::vector<Deporte> los_deportes_del_atleta = {deportes[0], deportes[1], deportes[2]};
+    std::vector<Deporte> los_deportes_del_atleta = {deportes[0], deportes[1], deportes[2], deportes[12]};
 
     ASSERT_EQ(los_deportes_del_atleta.size(), atleta.deportes().size());
     ASSERT_TRUE(atleta.deportes() == los_deportes_del_atleta);
@@ -70,14 +70,14 @@ TEST(atleta_tests, igualdad_de_atleta_con_deportes) {
     otro_atleta_igual.entrenarNuevoDeporte(deportes[5], 80);
 
     //otro_segundo_atleta_distinto entrena los mismos deportes, pero solo dos
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[3], 50);
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[1], 20);
+    otro_atleta_distinto.entrenarNuevoDeporte(deportes[3], 50);
+    otro_atleta_distinto.entrenarNuevoDeporte(deportes[1], 20);
 
     //otro_atleta_distinto entrena los mismos deportes con distintas capacidades
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[3], 51);
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[1], 21);
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[8], 100);
-    otro_atleta_igual.entrenarNuevoDeporte(deportes[5], 80);
+    otro_segundo_atleta_distinto.entrenarNuevoDeporte(deportes[3], 51);
+    otro_segundo_atleta_distinto.entrenarNuevoDeporte(deportes[1], 21);
+    otro_segundo_atleta_distinto.entrenarNuevoDeporte(deportes[8], 100);
+    otro_segundo_atleta_distinto.entrenarNuevoDeporte(deportes[5], 80);
 
     ASSERT_EQ(atleta, otro_atleta_igual);
     ASSERT_FALSE(atleta == otro_atleta_distinto);
@@ -124,4 +124,3 @@ TEST(atleta_tests, igualdad_atleta_luego_de_agregar_y_reentrenar_deportes) {
 
     ASSERT_FALSE(atleta == otro_atleta_igual);
 }
-

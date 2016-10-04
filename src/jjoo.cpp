@@ -91,8 +91,8 @@ std::ostream &operator<<(std::ostream &os, const JJOO &j) {
     return os;
 }
 
-std::ostream &operator>>(std::ostream &os, const JJOO &j) {
-    return os;
+std::istream &operator>>(std::istream &is, const JJOO &j) {
+    return is;
 }
 
 bool JJOO::operator==(const JJOO &j) const {
