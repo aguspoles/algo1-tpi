@@ -15,6 +15,9 @@ private:
     Genero _genero;
     vector<pair<Deporte, int> > _deportes;
 
+    //auxiliares
+    void ordenar(vector<pair<Deporte,int>> &vs);
+
 public:
     Atleta(const string &n, const Genero &g, const int &a, const Pais &p, const int &c);
 

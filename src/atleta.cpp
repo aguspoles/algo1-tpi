@@ -52,8 +52,8 @@ int Atleta::capacidad(const Deporte &d) const {
 Deporte Atleta::especialidad() const {
     int i = 1;
     Deporte max = _deportes[0].first;
-    while(i < _deportes.size()){
-        if(_deportes[i].second >= _deportes[i].second)
+    while(i < _deportes.size()-1){
+        if(_deportes[i].second >= _deportes[i+1].second)
             max = _deportes[i].first;
     }
     return max;
@@ -61,6 +61,7 @@ Deporte Atleta::especialidad() const {
 
 void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
     int i = 0;
+    pair<Deporte,int> dep(d,c);
     bool estaElDeporte = false;
     pair<Deporte,int> dep = make_pair(d,c);
     while(i < _deportes.size() && !estaElDeporte){
@@ -72,21 +73,36 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
     if(!estaElDeporte)
         _deportes.push_back(dep);
 
-    //y aca lo ordeno
+    ordenar(_deportes);
 }
 
 void Atleta::mostrar(std::ostream &os) const {
+    os << *this;
 }
 
 void Atleta::guardar(std::ostream &os) const {
+    os << *this;
 }
 
 void Atleta::cargar(std::istream &is) {
+    //is >> *this;
 }
 
+//A |Liu Song| |Masculino| 1972 |China| 123 [(|Tenis de Mesa|, 90)]
 std::ostream &operator<<(std::ostream &os, const Atleta &a) {
+    os << "A " << "|" << a.nombre() << "| " << "|" << a.genero() << "| ";
+    os << a.anioNacimiento() << " " << "|" << a.nacionalidad() << "| ";
+    os << "[";
+    int i = 0;
+    while(i < a.deportes().size()){
+        os << "(|" << a.deportes()[i] << "|," << a.capacidad(a.deportes()[i]) << ")";
+        if(i < a.deportes().size()-1)
+            os << ",";
+    }
+    os << "]";
     return os;
 }
+
 
 std::istream &operator>>(std::istream &is, const Atleta &a) {
     return is;
@@ -104,12 +120,12 @@ bool Atleta::operator==(const Atleta &a) const {
     if(_genero != a.genero())
         return false;
     if(_nacionalidad != a.nacionalidad())
-        return false;
     while(i < _deportes.size()){
         if(_deportes[i].first != (a.deportes())[i] || _deportes[i].second != a.capacidad(a.deportes()[i]))
-            return false;
+            return res;
     }
-    return true;
+    res = true;
+    return res;
 }
 
 Atleta Atleta::operator=(const Atleta &a) {
@@ -120,4 +136,17 @@ Atleta Atleta::operator=(const Atleta &a) {
     _genero = a._genero;
     _deportes = a._deportes;
     return (*this);
+}
+
+//auxiliar
+void Atleta::ordenar(vector<pair<Deporte,int>> &vs){
+    int i = 0;
+    pair<Deporte,int> swap;
+    while(i < vs.size()-1){
+        if(vs[i].first > vs[i+1].first){
+            swap = vs[i];
+            vs[i] = vs[i+1];
+            vs[i+1] = swap;
+        }
+    }
 }
