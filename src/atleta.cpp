@@ -3,12 +3,13 @@
 
 Atleta::Atleta(const string &n, const Genero &g, const int &a, const Pais &p, const int &c) {
     Deporte d = "Tenis";
+    pair<Deporte,int> dep = make_pair(d,50);
     _anioNacimiento = a;
     _ciaNumber = c;
     _nacionalidad = p;
     _nombre = n;
     _genero = g;
-    _deportes.push_back(pair(d,0));
+    _deportes.push_back(dep);
 }
 
 string Atleta::nombre() const {
@@ -61,6 +62,7 @@ Deporte Atleta::especialidad() const {
 void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
     int i = 0;
     bool estaElDeporte = false;
+    pair<Deporte,int> dep = make_pair(d,c);
     while(i < _deportes.size() && !estaElDeporte){
         if(_deportes[i].first == d) {
             estaElDeporte = true;
@@ -68,7 +70,7 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
         }
     }
     if(!estaElDeporte)
-        _deportes.push_back(pair(d,c));
+        _deportes.push_back(dep);
 
     //y aca lo ordeno
 }
@@ -93,15 +95,15 @@ std::istream &operator>>(std::istream &is, const Atleta &a) {
 bool Atleta::operator==(const Atleta &a) const {
     bool res = false;
     int i = 0;
-    if(this->_nombre != a.nombre())
+    if(_nombre != a.nombre())
         return false;
-    if(this->_anioNacimiento != a.anioNacimiento())
+    if(_anioNacimiento != a.anioNacimiento())
         return false;
-    if(this->_ciaNumber != a.ciaNumber())
+    if(_ciaNumber != a.ciaNumber())
         return false;
-    if(this->genero() != a.genero())
+    if(_genero != a.genero())
         return false;
-    if(this->_nacionalidad != a.nacionalidad())
+    if(_nacionalidad != a.nacionalidad())
         return false;
     while(i < _deportes.size()){
         if(_deportes[i].first != (a.deportes())[i] || _deportes[i].second != a.capacidad(a.deportes()[i]))
