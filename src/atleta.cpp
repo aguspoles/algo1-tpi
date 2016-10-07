@@ -61,7 +61,6 @@ Deporte Atleta::especialidad() const {
 
 void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
     int i = 0;
-    pair<Deporte,int> dep(d,c);
     bool estaElDeporte = false;
     pair<Deporte,int> dep = make_pair(d,c);
     while(i < _deportes.size() && !estaElDeporte){
@@ -103,8 +102,18 @@ std::ostream &operator<<(std::ostream &os, const Atleta &a) {
     return os;
 }
 
-
+//A |Liu Song| |Masculino| 1972 |China| 123 [(|Tenis de Mesa|, 90)]
 std::istream &operator>>(std::istream &is, const Atleta &a) {
+    /*string s;
+    is.ignore(3);//A >> ' ' >> '|'
+    getline(is,s,'|');
+    a.nombre() = s;
+    is.ignore(2);//' ' >> '|'
+    is >> a.genero();
+    is.ignore(2);//'|' >> ' '
+    is >> a.anioNacimiento();
+    is.ignore(2);
+    is >> a.nacionalidad();*/
     return is;
 }
 
