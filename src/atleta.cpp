@@ -37,6 +37,7 @@ vector<Deporte> Atleta::deportes() const {
     int i = 0;
     while(i < _deportes.size()){
         ret.push_back(_deportes[i].first);
+        i++;
     }
     return ret;
 }
@@ -46,6 +47,7 @@ int Atleta::capacidad(const Deporte &d) const {
     while(i < _deportes.size()) {
         if (_deportes[i].first == d)
             return _deportes[i].second;
+        i++;
     }
 }
 
@@ -55,6 +57,7 @@ Deporte Atleta::especialidad() const {
     while(i < _deportes.size()-1){
         if(_deportes[i].second >= _deportes[i+1].second)
             max = _deportes[i].first;
+        i++;
     }
     return max;
 }
@@ -68,11 +71,12 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
             estaElDeporte = true;
             _deportes[i].second = c;
         }
+        i++;
     }
-    if(!estaElDeporte)
+    if(!estaElDeporte) {
         _deportes.push_back(dep);
-
-    ordenar(_deportes);
+        ordenar(_deportes);
+    }
 }
 
 void Atleta::mostrar(std::ostream &os) const {
@@ -102,7 +106,7 @@ std::ostream &operator<<(std::ostream &os, const Atleta &a) {
     return os;
 }
 
-//A |Liu Song| |Masculino| 1972 |China| 123 [(|Tenis de Mesa|, 90)]
+//A |Liu Song| | Masculino 4 1972 |China| 123 [(|Tenis de Mesa|, 90)]
 std::istream &operator>>(std::istream &is, const Atleta &a) {
     /*string s;
     is.ignore(3);//A >> ' ' >> '|'
@@ -129,9 +133,15 @@ bool Atleta::operator==(const Atleta &a) const {
     if(_genero != a.genero())
         return false;
     if(_nacionalidad != a.nacionalidad())
+        return res;
+    if(_deportes.size() != a.deportes().size())
+        return res;
     while(i < _deportes.size()){
-        if(_deportes[i].first != (a.deportes())[i] || _deportes[i].second != a.capacidad(a.deportes()[i]))
+        if(_deportes[i].first != (a.deportes())[i])
             return res;
+        else if(_deportes[i].second != a.capacidad(a.deportes()[i]))
+            return res;
+        i++;
     }
     res = true;
     return res;
@@ -150,12 +160,17 @@ Atleta Atleta::operator=(const Atleta &a) {
 //auxiliar
 void Atleta::ordenar(vector<pair<Deporte,int>> &vs){
     int i = 0;
+    int pasada = 1;
     pair<Deporte,int> swap;
-    while(i < vs.size()-1){
-        if(vs[i].first > vs[i+1].first){
-            swap = vs[i];
-            vs[i] = vs[i+1];
-            vs[i+1] = swap;
+    while(pasada < vs.size()) {
+        while (i < vs.size() - 1) {
+            if (vs[i].first > vs[i + 1].first) {
+                swap = vs[i];
+                vs[i] = vs[i + 1];
+                vs[i + 1] = swap;
+            }
+            i++;
         }
+        pasada++;
     }
 }
