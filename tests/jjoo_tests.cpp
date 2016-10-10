@@ -88,8 +88,8 @@ TEST(jjoo_tests, competencias_al_transcurrir_un_dia) {
     ASSERT_TRUE(mismos(jo.competencias(), {comp}));
     ASSERT_TRUE(mismos(jo.atletas(), atletas));
 
-    jo._cronograma[0][0].sancionarTramposos();
     jo.transcurrirDia();
+    jo._cronograma[0][0].sancionarTramposos();
 
     ASSERT_TRUE(mismos(jo.atletas(), atletas));
     ASSERT_EQ(2, jo.jornadaActual());
