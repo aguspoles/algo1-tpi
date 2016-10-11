@@ -14,6 +14,18 @@ private:
     vector<Atleta> _ranking;
     vector<pair<Atleta, bool> > _lesTocoControlAntiDoping;
 
+    //auxiliares
+    Atleta participanteConNumber(int c, const vector<Atleta> &as);
+    bool estaCiaNumber(const Atleta &x, const vector<int> &as);
+    vector<Atleta> primerosDeAntiDoping(const vector<pair<Atleta,bool>> &ad);
+    bool capacidadesOrdenadas(const vector<int> &vs) const;
+    bool pertenece(const Atleta &a, const vector<pair<Atleta,bool>> &vs);
+    bool mismosParticipantes(const vector<Atleta> &xs, const vector<Atleta> &ys) const;
+    int cuentaParticipante(const Atleta &a, const vector<Atleta> &as) const;
+    bool mismosAntiDoping(const vector<pair<Atleta,bool>> &xs, const vector<Atleta> &ys) const;
+    vector<Atleta> primeros(const vector<pair<Atleta,bool>> &ps) const;
+    int cuentaDopado(const Atleta &a, const vector<Atleta> &as) const;
+
 public:
     Competencia(const Deporte &d, const Genero &g, const vector<Atleta> &as);
 

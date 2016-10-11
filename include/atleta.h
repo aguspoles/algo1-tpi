@@ -5,9 +5,7 @@
 
 
 class Atleta {
-
 private:
-
     int _anioNacimiento;
     int _ciaNumber;
     Pais _nacionalidad;
@@ -53,6 +51,8 @@ public:
 
 std::ostream &operator<<(std::ostream &os, const Atleta &a);
 
-std::istream &operator>>(std::istream &is, const Atleta &a);
+std::istream &operator>>(std::istream &is, Atleta &a);
+std::istream &operator>>(std::istream &is, vector<pair<Deporte,int>> &vs);
 
+Genero stringToGenero(string s);
 #endif /*__ATLETA__*/
