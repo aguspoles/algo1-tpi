@@ -91,7 +91,7 @@ std::ostream &operator<<(std::ostream &os, const JJOO &j) {
     return os;
 }
 
-std::istream &operator>>(std::istream &is, const JJOO &j) {
+std::istream &operator>>(std::istream &is, JJOO &j) {
     return is;
 }
 

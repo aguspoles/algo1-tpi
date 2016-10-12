@@ -340,8 +340,8 @@ TEST(jjoo_tests, hay_un_patron) {
 
     ASSERT_TRUE(jo.medallero() == medallero);
 
-    ASSERT_TRUE(
-            jo.uyOrdenadoAsiHayUnPatron()); //En la cuarta fecha nadie gano nada y lexicograficamente Argentina deberia quedar primera
+    ASSERT_FALSE(
+            jo.uyOrdenadoAsiHayUnPatron()); //En la cuarta fecha nadie gano nada, se deberia omitir
 
 }
 

@@ -51,6 +51,6 @@ public:
 
 std::ostream &operator<<(std::ostream &os, const Competencia &c);
 
-std::istream &operator>>(std::istream &is, const Competencia &c);
+std::istream &operator>>(std::istream &is, Competencia &c);
 
 #endif /*__COMPETENCIA__*/
