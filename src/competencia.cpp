@@ -109,7 +109,7 @@ std::ostream &operator<<(std::ostream &os, const Competencia &c) {
     return os;
 }
 
-std::istream &operator>>(std::istream &is, const Competencia &c) {
+std::istream &operator>>(std::istream &is, Competencia &c) {
     return is;
 }
 

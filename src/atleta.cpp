@@ -108,6 +108,7 @@ std::ostream &operator<<(std::ostream &os, const Atleta &a) {
     return os;
 }
 
+<<<<<<< HEAD
 //cargar
 //A |Liu Song| |Masculino| 1972 |China| 123 [(|Tenis de Mesa|, 90)]
 std::istream &operator>>(std::istream &is, Atleta &a) {
@@ -151,6 +152,9 @@ std::istream &operator>>(std::istream &is, vector<pair<Deporte, int>> &vs) {
         vs.push_back(p);
     }
     is.ignore();//']'
+=======
+std::istream &operator>>(std::istream &is, Atleta &a) {
+>>>>>>> 542d6ce43a833a53fc829a25dbe6c86c4db1ce4e
     return is;
 }
 

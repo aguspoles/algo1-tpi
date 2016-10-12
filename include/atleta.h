@@ -52,7 +52,10 @@ public:
 std::ostream &operator<<(std::ostream &os, const Atleta &a);
 
 std::istream &operator>>(std::istream &is, Atleta &a);
+<<<<<<< HEAD
 std::istream &operator>>(std::istream &is, vector<pair<Deporte,int>> &vs);
+=======
+>>>>>>> 542d6ce43a833a53fc829a25dbe6c86c4db1ce4e
 
 Genero stringToGenero(string s);
 #endif /*__ATLETA__*/
