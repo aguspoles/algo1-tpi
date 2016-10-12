@@ -54,10 +54,8 @@ void Competencia::finalizar(const vector<int> &posiciones, const vector<pair<int
     }
     _ranking = ranking;
     while(j < _participantes.size()) {
-        if(estaCiaNumber(_participantes[j],posiciones)) {
-            pair<Atleta, bool> x = make_pair(_participantes[j], leDioPositivo(_participantes[j]));
-            controlAntiDoping.push_back(x);
-        }
+        if(estaEnControl(_participantes[j],control))
+           controlAntiDoping.push_back(atletaConSuControl(_participantes[j],control));
         j++;
     }
     _lesTocoControlAntiDoping = controlAntiDoping;
@@ -146,11 +144,23 @@ Atleta Competencia::participanteConNumber(int c, const vector<Atleta> &as){
     }
 }
 
-bool Competencia::estaCiaNumber(const Atleta &x, const vector<int> &as){
+pair<Atleta,bool> Competencia::atletaConSuControl(const Atleta &x, const vector<pair<int,bool>> &as){
     int i = 0;
     while(i < as.size()) {
-        if (as[i] == x.ciaNumber())
+        if (as[i].first == x.ciaNumber()) {
+            pair<Atleta, bool> res = make_pair(x, as[i].second);
+            return res;
+        }
+        i++;
+    }
+}
+
+bool Competencia::estaEnControl(const Atleta &x, const vector<pair<int,bool>> &as){
+    int i = 0;
+    while(i < as.size()) {
+        if (as[i].first == x.ciaNumber()) {
             return true;
+        }
         i++;
     }
     return false;
@@ -168,7 +178,7 @@ vector<Atleta> Competencia::primerosDeAntiDoping(const vector<pair<Atleta,bool>>
 
 bool Competencia::capacidadesOrdenadas(const vector<int> &vs) const{
     int i = 0;
-    while(i < vs.size()) {
+    while(i < vs.size()-1) {
         if (vs[i] > vs[i + 1])
             return false;
         i++;

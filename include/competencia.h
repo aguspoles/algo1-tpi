@@ -16,7 +16,8 @@ private:
 
     //auxiliares
     Atleta participanteConNumber(int c, const vector<Atleta> &as);
-    bool estaCiaNumber(const Atleta &x, const vector<int> &as);
+    pair<Atleta,bool> atletaConSuControl(const Atleta &x, const vector<pair<int,bool>> &as);
+    bool estaEnControl(const Atleta &x, const vector<pair<int,bool>> &as);
     vector<Atleta> primerosDeAntiDoping(const vector<pair<Atleta,bool>> &ad);
     bool capacidadesOrdenadas(const vector<int> &vs) const;
     bool pertenece(const Atleta &a, const vector<pair<Atleta,bool>> &vs);
