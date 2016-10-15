@@ -5,40 +5,72 @@
 
 
 JJOO::JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia> > &cs) {
+    _anio = a;
+    _atletas = as;
+    _cronograma = cs;
+    _jornadaActual = 1;
 }
 
 int JJOO::anio() const {
-    return 1920;
+    return _anio;
 }
 
 vector<Atleta> JJOO::atletas() const {
-    return vector<Atleta>();
+    return _atletas;
 }
 
 int JJOO::cantDias() const {
-    return 0;
+    return _cronograma.size();
 }
 
 int JJOO::jornadaActual() const {
-    return 0;
+    return _jornadaActual;
 }
 
 vector<Competencia> JJOO::cronograma(const int &d) const {
-    return vector<Competencia>();
+    int i = 0;
+    while(i < _cronograma.size()){
+        if(i == d)
+            return _cronograma[i];
+        i++;
+    }
+    return {{}};
 }
 
 vector<Competencia> JJOO::competencias() const {
     vector<Competencia> ret;
+    int i = 0;
+    int j = 0;
+    while(i < _cronograma.size()){
+        while(j < _cronograma[i].size()){
+            ret.push_back(_cronograma[i][j]);
+            j++;
+        }
+        i++;
+    }
     return ret;
 }
 
 vector<Competencia> JJOO::competenciasFinalizadasConOroEnPodio() const {
     vector<Competencia> ret;
+    int i = 0;
+    int j = 0;
+    while(i < _cronograma.size()){
+        while(j < _cronograma[i].size()){
+            if(_cronograma[i][j].ranking().size() > 0)
+                ret.push_back(_cronograma[i][j]);
+            j++;
+        }
+        i++;
+    }
     return ret;
 }
 
 vector<Atleta> JJOO::dePaseo() const {
     vector<Atleta> ret;
+    int i = 0;
+    int j = 0;
+   // while(i < )
     return ret;
 }
 
