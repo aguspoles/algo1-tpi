@@ -77,6 +77,7 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
         _deportes.push_back(dep);
         ordenar(_deportes);
     }
+    ordenar(_deportes);
 }
 
 void Atleta::mostrar(std::ostream &os) const {
@@ -114,6 +115,7 @@ std::istream &operator>>(std::istream &is, Atleta &a) {
     string nombre, genero, nacionalidad;
     int ciaNumber, anioNacimiento;
     vector<pair<Deporte, int>> deportes;
+
     is.ignore(3);//A >> ' ' >> '|'
     getline(is, nombre, '|');
     is.ignore(2);//' ' >> '|'
@@ -124,12 +126,15 @@ std::istream &operator>>(std::istream &is, Atleta &a) {
     is >> ciaNumber;
     is.ignore();//' '
     is >> deportes;
+    string d, c;
     Genero g = stringToGenero(genero);
     Atleta atleta(nombre, g, anioNacimiento, nacionalidad, ciaNumber);
 
     int i = 0;
-    while (i < deportes.size())
+    while (i < deportes.size()) {
         atleta.entrenarNuevoDeporte(deportes[i].first, deportes[i].second);
+        i++;
+    }
 
     a = atleta;
     return is;
@@ -196,6 +201,7 @@ void Atleta::ordenar(vector<pair<Deporte, int>> &vs) {
     int pasada = 1;
     pair<Deporte, int> swap;
     while (pasada < vs.size()) {
+        i = 0;
         while (i < vs.size() - 1) {
             if (vs[i].first > vs[i + 1].first) {
                 swap = vs[i];

@@ -30,7 +30,7 @@ int JJOO::jornadaActual() const {
 vector<Competencia> JJOO::cronograma(const int &d) const {
     int i = 0;
     while(i < _cronograma.size()){
-        if(i == d)
+        if(i == d-1)
             return _cronograma[i];
         i++;
     }
@@ -40,8 +40,9 @@ vector<Competencia> JJOO::cronograma(const int &d) const {
 vector<Competencia> JJOO::competencias() const {
     vector<Competencia> ret;
     int i = 0;
-    int j = 0;
+    int j;
     while(i < _cronograma.size()){
+        j = 0;
         while(j < _cronograma[i].size()){
             ret.push_back(_cronograma[i][j]);
             j++;
@@ -54,8 +55,9 @@ vector<Competencia> JJOO::competencias() const {
 vector<Competencia> JJOO::competenciasFinalizadasConOroEnPodio() const {
     vector<Competencia> ret;
     int i = 0;
-    int j = 0;
+    int j;
     while(i < _cronograma.size()){
+        j = 0;
         while(j < _cronograma[i].size()){
             if(_cronograma[i][j].ranking().size() > 0)
                 ret.push_back(_cronograma[i][j]);
@@ -70,17 +72,83 @@ vector<Atleta> JJOO::dePaseo() const {
     vector<Atleta> ret;
     int i = 0;
     int j = 0;
-   // while(i < )
+    while(i < _atletas.size()){
+        j = 0;
+        while(j < competencias().size()) {
+            if (perteneceACompetencia(_atletas[i], competencias()[j])) {
+                break;
+            }
+            j++;
+        }
+        if(j == competencias().size())
+            ret.push_back(_atletas[i]);
+        i++;
+    }
     return ret;
 }
 
 vector<pair<Pais, vector<int> > > JJOO::medallero() const {
     vector<pair<Pais, vector<int> > > ret;
+    /*int i = 0;
+    int j = 0;
+    int cuentaOro = 0;
+    int cuentaPlata = 0;
+    int cuentaBronce = 0;
+    pair<Pais, vector<int> > cantidadMedallas;
+    while(i < _atletas.size()){
+        j = 0;
+        cuentaBronce = cuentaOro = cuentaPlata = 0;
+        while(j < competencias().size()){
+            if(_atletas[i] == competencias()[j].ranking()[0])
+                cuentaOro++;
+            if(_atletas[i] == competencias()[j].ranking()[1])
+                cuentaPlata++;
+            if(_atletas[i] == competencias()[j].ranking()[2])
+                cuentaBronce++;
+            j++;
+        }
+        cantidadMedallas = make_pair(_atletas[i].nacionalidad(), {cuentaOro,cuentaPlata,cuentaBronce});
+        ret.push_back(cantidadMedallas);
+        i++;
+    }*/
     return ret;
 }
 
 int JJOO::boicotPorDisciplina(const Categoria &c, const Pais &p) {
-    return 0;
+    int i = 0;
+    int j = 0;
+    int h = 0;
+    int cuenta = 0;
+    Deporte d;
+    Genero  g;
+    vector<vector<Competencia>> res;
+    vector<Atleta> as;
+    vector<int> is;
+    vector<pair<int,bool>> xs;
+    while(i < _cronograma.size()){
+        j = 0;
+        while(j < _cronograma[i].size()){
+            h = 0;
+            if(_cronograma[i][j].categoria() == c){
+                while(h < _cronograma[i][j].participantes().size()){
+                    if(_cronograma[i][j].participantes()[h].nacionalidad() != p)
+                        as.push_back(_cronograma[i][j].participantes()[h]);
+                    else cuenta++;
+                    h++;
+                }
+                d = _cronograma[i][j].categoria().first;
+                g = _cronograma[i][j].categoria().second;
+                is = sacoLosDeRanking(_cronograma[i][j], p);
+                xs = sacoLosDeDoping(_cronograma[i][j], p);
+            }
+            Competencia c(d,g,as);
+            _cronograma[i][j] = c;
+            if(_cronograma[i][j].finalizada()) _cronograma[i][j].finalizar(is,xs);
+            j++;
+        }
+        i++;
+    }
+    return cuenta;
 }
 
 vector<Atleta> JJOO::losMasFracasados(const Pais &p) const {
@@ -94,6 +162,15 @@ void JJOO::liuSong(const Atleta &a, const Pais &p) {
 
 Atleta JJOO::stevenBradbury() const {
     Atleta ret("Bob esponja", Genero::Masculino, 0, "Pais falso", 0);
+    /*int i = 0;
+    int min = cronograma(1)[0].ranking()[0].capacidad(cronograma(1)[0].categoria().first);
+    while(i < ganadoresPorCategoria(_cronograma,jornadaActual()).size()){
+        vector<pair<Atleta,Categoria>> x = ganadoresPorCategoria(_cronograma,jornadaActual());
+        if(x[i].first.capacidad(x[i].second.first) < min) {
+            min = x[i].first.capacidad(x[i].second.first);
+            ret = x[i].first;
+        }
+    }*/
     return ret;
 }
 
@@ -107,7 +184,19 @@ vector<Pais> JJOO::sequiaOlimpica() const {
 }
 
 void JJOO::transcurrirDia() {
-    return;
+        int i = 0;
+        vector<int> is;
+        vector<pair<int, bool>> ds;
+        pair<int, bool> l = make_pair(2, false);
+        while (i < _cronograma[_jornadaActual - 1].size()) {
+            if (!(_cronograma[_jornadaActual - 1][i].finalizada())) {
+                is = ciaNumbers(atletasDeLaCompetencia(_cronograma[_jornadaActual - 1][i].participantes(), _cronograma[_jornadaActual - 1][i]));
+                ds.push_back(l);
+                _cronograma[_jornadaActual - 1][i].finalizar(is, ds);
+            }
+            i++;
+        }
+        _jornadaActual += 1;
 }
 
 void JJOO::mostrar(std::ostream &os) const {
@@ -138,3 +227,131 @@ JJOO JJOO::operator=(const JJOO &j) {
     _jornadaActual = j._jornadaActual;
     return (*this);
 }
+
+
+//AUXILIARES
+
+bool JJOO::perteneceACompetencia(const Atleta &a, const Competencia &c)const{
+    int i = 0;
+    while(i < c.participantes().size()){
+        if(a == c.participantes()[i])
+            return true;
+        i++;
+    }
+    return  false;
+}
+
+vector<int> JJOO::ciaNumbers(vector<Atleta> as){
+    int i = 0;
+    vector<int> res;
+    while(i < as.size()){
+        res.push_back(as[i].ciaNumber());
+        i++;
+    }
+    return res;
+}
+
+void JJOO::ordenarPorCapacidad(vector<Atleta> &vs, Deporte d){
+    int i = 0;
+    int pasada = 1;
+    Atleta swap("Argentina", Masculino, 1994, "Argentina", 2);
+    while (pasada < vs.size()) {
+        i = 0;
+        while (i < vs.size() - 1) {
+            if (vs[i].capacidad(d) < vs[i + 1].capacidad(d)) {
+                swap = vs[i];
+                vs[i] = vs[i + 1];
+                vs[i + 1] = swap;
+            }
+            i++;
+        }
+        pasada++;
+    }
+}
+
+vector<Atleta> JJOO::atletasDeLaCompetencia(vector<Atleta> as, Competencia c){
+    int j = 0;
+    vector<Atleta> res;
+        while(j < as.size()) {
+            if (perteneceACompetencia(as[j], c))
+                res.push_back(as[j]);
+            j++;
+        }
+    ordenarPorCapacidad(res, c.categoria().first);
+    return res;
+}
+
+/*vector<pair<Atleta,Categoria>> JJOO::ganadoresPorCategoria(const vector<vector<Competencia>> &cs, const int &dia) const{
+    int i = 0;
+    int j = 1;
+    vector<pair<Atleta,Categoria>> res;
+    pair<Atleta,Categoria> ganador;
+    while(j <= dia) {
+        i = 0;
+        while (i < cs.size()) {
+            if (cronograma(j)[i].finalizada()) {
+                ganador = make_pair(cronograma(j)[i].ranking()[0], cronograma(j)[i].categoria());
+                res.push_back(ganador);
+            }
+            i++;
+        }
+        j++;
+    }
+    return  res;
+}*/
+
+vector<int> JJOO::sacoLosDeRanking(Competencia c, Pais p){
+    int i = 0;
+    vector<int> cia;
+    while(i < c.ranking().size()){
+        if(c.ranking()[i].nacionalidad() != p)
+            cia.push_back(c.ranking()[i].ciaNumber());
+        i++;
+    }
+    return cia;
+}
+
+vector<pair<int,bool>> JJOO::sacoLosDeDoping(Competencia c, Pais p){
+    int i = 0;
+    vector<pair<int,bool>> xs;
+    pair<int,bool> x;
+    while(i < c.lesTocoControlAntiDoping().size()){
+        if(c.lesTocoControlAntiDoping()[i].nacionalidad() != p){
+            x = make_pair(c.lesTocoControlAntiDoping()[i].ciaNumber(),c.leDioPositivo(c.lesTocoControlAntiDoping()[i]));
+            xs.push_back(x);
+        }
+        i++;
+    }
+    return  xs;
+}
+
+vector<Atleta> losAtletasDelPais(Competencia c, Pais p){
+    int i = 0;
+    vector<Atleta> res;
+    while(i < c.participantes().size()){
+        if(c.participantes()[i].nacionalidad() == p)
+            res.push_back(c.participantes()[i]);
+        i++;
+    }
+    return res;
+}
+
+/*vector<Atleta> losMasParticipantes(vector<Atleta> as, vector<Competencia> cs){
+    int i = 0;
+    int j = 0;
+    vector<Atleta> res;
+    int max = 0;
+    Atleta a;
+    while(i < cs.size()){
+        j = 0;
+        while (j < as.size()){
+            if(cuentaParticipaciones(as[j],cs) > max){
+                max = cuentaParticipaciones(as[j]);
+                a = as[j];
+            }
+            j++;
+        }
+        i++;
+    }
+    res.push_back(a);
+}*/

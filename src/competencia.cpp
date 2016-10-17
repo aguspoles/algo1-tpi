@@ -12,7 +12,7 @@ Categoria Competencia::categoria() const {
     return _categoria;
 }
 
-vector<Atleta> Competencia::participantes() const {
+vector<Atleta> Competencia::participantes() const{
     return _participantes;
 }
 
@@ -48,6 +48,7 @@ void Competencia::finalizar(const vector<int> &posiciones, const vector<pair<int
     vector <pair<Atleta,bool>> controlAntiDoping;
     int i = 0;
     int j = 0;
+    _finalizada = true;
     while(i < posiciones.size()) {
             ranking.push_back(participanteConNumber(posiciones[i], _participantes));
         i++;
@@ -59,7 +60,6 @@ void Competencia::finalizar(const vector<int> &posiciones, const vector<pair<int
         j++;
     }
     _lesTocoControlAntiDoping = controlAntiDoping;
-    _finalizada = true;
 }
 
 void Competencia::linfordChristie(const int &n) {
@@ -95,19 +95,120 @@ void Competencia::sancionarTramposos() {
 }
 
 void Competencia::mostrar(std::ostream &os) const {
+    os << *this;
 }
 
 void Competencia::guardar(std::ostream &os) const {
+    os << *this;
 }
 
 void Competencia::cargar(std::istream &is) {
+    is >> *this;
 }
 
+/*C (|Rugby|, |Masculino|) |True|
+ * [(A |Juan| |Masculino| 1920 |Argentina| 1 [(|Football|, 35), (|Rugby|, 10)]),
+ * (A |Jorge| |Masculino| 1930 |Argentina| 2 [(|Football|, 32), (|Rugby|, 20)]),
+ * (A |Jackson| |Masculino| 1935 |Escocia| 6 [(|Basket|, 25), (|Football|, 40), (|Rugby|, 5)])]
+ * [1, 6] [(1, |True|), (6, |True|)]
+*/
 std::ostream &operator<<(std::ostream &os, const Competencia &c) {
+    int i = 0;
+    /*C (|Rugby|, |Masculino|) |True| */
+    os << "C" << "(|" << c.categoria().first << "|, " << "|" << c.categoria().second << "|) ";
+    os << "|" << c.finalizada() << "| ";
+    os << "[";
+    /*[(A |Juan| |Masculino| 1920 |Argentina| 1 [(|Football|, 35), (|Rugby|, 10)]), (A |Jorge| |Masculino| 1930 |Argentina| 2 [(|Football|, 32), (|Rugby|, 20)]), (A |Jackson| |Masculino| 1935 |Escocia| 6 [(|Basket|, 25), (|Football|, 40), (|Rugby|, 5)])]*/
+    while (i < c.participantes().size()){
+        os << "(";
+        os << c.participantes()[i];
+        if(i < c.participantes().size()-1)
+            os << "), ";
+        else os << ")] ";
+        i++;
+    }
+    i = 0;
+    /*[1, 6]*/
+    os << "[";
+    while(i < c.ranking().size()) {
+        os << c.ranking()[i].ciaNumber();
+        if(i < c.ranking().size()-1)
+            os << ", ";
+        else os << "] ";
+        i++;
+    }
+    i = 0;
+    /*[(1, |True|), (6, |True|)]*/
+    os << "[";
+    while(i < c.lesTocoControlAntiDoping().size()){
+        os << "(" << c.lesTocoControlAntiDoping()[i].ciaNumber();
+        //os << ", |" << leDioPositivo(c.lesTocoControlAntiDoping()[i]) << "|)";
+        if(i < c.lesTocoControlAntiDoping().size()-1)
+            os << ", ";
+        else os << "]";
+    }
     return os;
 }
 
+/*C (|Rugby|, |Masculino|) |True|
+ * [(A |Juan| |Masculino| 1920 |Argentina| 1 [(|Football|, 35), (|Rugby|, 10)]),
+ * (A |Jorge| |Masculino| 1930 |Argentina| 2 [(|Football|, 32), (|Rugby|, 20)]),
+ * (A |Jackson| |Masculino| 1935 |Escocia| 6 [(|Basket|, 25), (|Football|, 40), (|Rugby|, 5)])]
+ * [1, 6] [(1, |True|), (6, |True|)]
+*/
 std::istream &operator>>(std::istream &is, Competencia &c) {
+    string deporte,gen,finalizada,auxiliar;
+    Atleta a("Bob esponja", Genero::Masculino, 0, "Pais falso", 0);
+    vector<Atleta> as;
+    vector<int> posiciones;
+    vector<pair<int,bool>> ys;
+    pair<int,bool> y;
+    bool anti;
+    int i = 0;
+
+    is.ignore(4);
+    getline(is,deporte,'|');
+    is.ignore(3);
+    getline(is,gen,'|');
+    is.ignore(3);
+    getline(is,finalizada,'|');
+    is.ignore(3);
+    while(is.peek() == 'A') {
+        is >> a;
+        as.push_back(a);
+        is.ignore();
+        if(is.peek() == ',') is.ignore(3);
+        else is.ignore(2);
+    }
+
+    /*[1, 6]*/
+    is.ignore();
+    while(is.peek() != ']'){
+        getline(is,auxiliar,',');
+        is.putback(',');
+        i = atoi(auxiliar.c_str());
+        posiciones.push_back(i);
+        if(is.peek() == ',') is.ignore(2);
+    }
+
+    is.ignore(3);
+    /*[(1, |True|), (6, |True|)]*/
+    while (is.peek() != ']'){
+        is.ignore();
+        getline(is,auxiliar,',');
+        i = atoi(auxiliar.c_str());
+        is.ignore(2);
+        getline(is,auxiliar,'|');
+        anti = stringToBool(auxiliar);
+        y = make_pair(i,anti);
+        ys.push_back(y);
+        is.ignore();
+        if(is.peek() == ',') is.ignore(2);
+    }
+    is.ignore();
+    Competencia comp(deporte,stringToGenero(gen),as);
+    c = comp;
+    if(finalizada == "True") c.finalizar(posiciones,ys);
     return is;
 }
 
@@ -209,7 +310,7 @@ bool Competencia::mismosParticipantes(const vector<Atleta> &xs, const vector<Atl
 
 int Competencia::cuentaParticipante(const Atleta &a, const vector<Atleta> &as) const{
     int i = 0;
-    int cuenta;
+    int cuenta = 0;
     while(i < as.size()){
         if(a == as[i])
             cuenta++;
@@ -248,6 +349,11 @@ int Competencia::cuentaDopado(const Atleta &a, const vector<Atleta> &as) const{
         i++;
     }
     return cuenta;
+}
+
+bool stringToBool(string s){
+    if(s == "True") return true;
+    else return false;
 }
 
 //FIN AUXILIARES

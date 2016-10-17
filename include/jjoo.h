@@ -24,6 +24,15 @@ private:
 
     friend class jjoo_tests_liu_song_Test;
 
+    //auxiliares
+    bool perteneceACompetencia(const Atleta &a, const Competencia &c)const;
+    vector<int> ciaNumbers(vector<Atleta> as);
+    void ordenarPorCapacidad(vector<Atleta> &vs, Deporte d);
+    vector<Atleta> atletasDeLaCompetencia(vector<Atleta> as, Competencia c);
+    vector<pair<Atleta,Categoria>> ganadoresPorCategoria(const vector<vector<Competencia>> &cs, const int &dia) const;
+    vector<pair<int,bool>> sacoLosDeDoping(Competencia c, Pais p);
+    vector<int> sacoLosDeRanking(Competencia c, Pais p);
+
 public:
     JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia> > &cs);
 

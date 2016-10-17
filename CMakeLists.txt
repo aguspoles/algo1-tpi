@@ -15,7 +15,7 @@ file(GLOB SOURCES "src/*.cpp")
 
 add_executable(tpi ${SOURCES})
 
-add_library(src ${SOURCES})
+add_library(src ${SOURCES} src/ojota.cpp src/ojota.cpp)
 
 # CMake anda a buscar lo que hay en el directorio 'tests'!
 add_subdirectory(tests)

@@ -93,8 +93,8 @@ TEST(jjoo_tests, competencias_al_transcurrir_un_dia) {
 
     ASSERT_TRUE(mismos(jo.atletas(), atletas));
     ASSERT_EQ(2, jo.jornadaActual());
-    //ASSERT_TRUE(test::mismos(jo.competenciasFinalizadasConOroEnPodio(), {comp}));
-    ASSERT_TRUE(transcurre_correctamente(jo.competencias()[0]));
+    //ASSERT_TRUE(mismos(jo.competenciasFinalizadasConOroEnPodio(), {comp}));//Comento esto porque esta comparando una competencia
+    ASSERT_TRUE(transcurre_correctamente(jo.competencias()[0]));             //que ni siquiera esta finalizada con otra que si.
     ASSERT_TRUE(mismos(jo.dePaseo(), {atletas[3]}));
 
     //Lo mismo pero finalizando la competencia por fuera
@@ -109,7 +109,7 @@ TEST(jjoo_tests, competencias_al_transcurrir_un_dia) {
     ASSERT_TRUE(mismos(otro_jo.competencias(), {comp}));
     ASSERT_TRUE(mismos(otro_jo.atletas(), atletas));
     ASSERT_EQ(otro_jo.jornadaActual(), 2);
-    ASSERT_TRUE(mismos(otro_jo.competenciasFinalizadasConOroEnPodio(), {comp}));
+    ASSERT_TRUE(mismos(otro_jo.competenciasFinalizadasConOroEnPodio(), {comp}));//Este si pasa porque finalizaron a comp.
     if (otro_jo.competenciasFinalizadasConOroEnPodio().size() == 1)
         ASSERT_TRUE(finaliza_correctamente(otro_jo.competenciasFinalizadasConOroEnPodio()[0]));
     ASSERT_TRUE(mismos(otro_jo.dePaseo(), {atletas[3]}));
@@ -172,10 +172,10 @@ TEST(jjoo_tests, competencias_al_transcurrir_dos_dias) {
                                                {2, true}});
     jo._cronograma[0][1].finalizar({3, 1, 0}, {{0, false}});
 
-    //ASSERT_TRUE((comp_uno_primer_dia.ranking() == {0,2,1}));
+    //ASSERT_TRUE((comp_uno_primer_dia.ranking() == {0,2,1}));/*****/  ESTE TEST NO COMPILA
     comp_uno_primer_dia.sancionarTramposos();
     jo._cronograma[0][0].sancionarTramposos();
-    //ASSERT_TRUE(comp_uno_primer_dia.ranking() == {1});
+    //ASSERT_TRUE(comp_uno_primer_dia.ranking() == {1});/*****/    ESTE TEST NO COMPILA
 
     jo.transcurrirDia();
 
@@ -190,9 +190,9 @@ TEST(jjoo_tests, competencias_al_transcurrir_dos_dias) {
     jo.transcurrirDia();
 
 
-    //ASSERT_EQ(jo.stevenBradbury(), atletas[1]);
+    ASSERT_EQ(jo.stevenBradbury(), atletas[1]);/*******/
     ASSERT_EQ(jo.jornadaActual(), 3);
-    ASSERT_TRUE(mismos(jo.competenciasFinalizadasConOroEnPodio(),
+    ASSERT_TRUE(mismos(jo.competenciasFinalizadasConOroEnPodio(),     //ESTE TEST ME DA PROBLEMAS
                        {comp_uno_primer_dia, comp_dos_primer_dia, comp_dos_segundo_dia}));
 
     if (jo.competenciasFinalizadasConOroEnPodio().size() == 3) {
