@@ -9,12 +9,15 @@ int main() {
 
     Atleta a("jose",Masculino,1994,"Grecia",10);
     Atleta b("hb",Femenino,1800,"holanda",20);
+    Competencia c("Foot", Masculino, {a,b});
+    c.finalizar({10,20},{{10,true},{20, false}});
     b.entrenarNuevoDeporte("paleta",60);
-    b.guardar(salida);
-    b.mostrar(cout);
-    a.cargar(entrada);
+
+    b.guardar(cout);
     cout << endl;
     a.mostrar(cout);
+    cout << endl;
+    c.mostrar(cout);
 
     entrada.close();
     salida.close();

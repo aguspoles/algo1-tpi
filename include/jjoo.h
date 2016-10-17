@@ -32,6 +32,11 @@ private:
     vector<pair<Atleta,Categoria>> ganadoresPorCategoria(const vector<vector<Competencia>> &cs, const int &dia) const;
     vector<pair<int,bool>> sacoLosDeDoping(Competencia c, Pais p);
     vector<int> sacoLosDeRanking(Competencia c, Pais p);
+    Atleta losMasParticipantes(vector<Atleta> as, vector<Competencia> cs) const;
+    vector<Atleta> losAtletasDelPais(Competencia c, Pais p) const;
+    int cuentaParticipaciones(Atleta a, vector<Competencia> cs)const;
+    bool pertenece(Atleta a, Competencia c)const;
+    bool noGanoMedallas(Atleta a, Competencia c)const;
 
 public:
     JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia> > &cs);

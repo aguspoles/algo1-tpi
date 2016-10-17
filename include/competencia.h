@@ -67,5 +67,6 @@ std::ostream &operator<<(std::ostream &os, const Competencia &c);
 std::istream &operator>>(std::istream &is, Competencia &c);
 
 bool stringToBool(string s);
+string boolToString(bool b);
 
 #endif /*__COMPETENCIA__*/

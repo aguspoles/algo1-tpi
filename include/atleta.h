@@ -13,6 +13,7 @@ private:
     Genero _genero;
     vector<pair<Deporte, int> > _deportes;
 
+
     //auxiliares
     void ordenar(vector<pair<Deporte,int>> &vs);
 
@@ -52,7 +53,6 @@ public:
 std::ostream &operator<<(std::ostream &os, const Atleta &a);
 
 std::istream &operator>>(std::istream &is, Atleta &a);
-std::istream &operator>>(std::istream &is, vector<pair<Deporte,int>> &vs);
 
 Genero stringToGenero(string s);
 #endif /*__ATLETA__*/

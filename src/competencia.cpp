@@ -94,35 +94,23 @@ void Competencia::sancionarTramposos() {
     _ranking = atletasResponsables;
 }
 
-void Competencia::mostrar(std::ostream &os) const {
-    os << *this;
-}
-
-void Competencia::guardar(std::ostream &os) const {
-    os << *this;
-}
-
-void Competencia::cargar(std::istream &is) {
-    is >> *this;
-}
-
 /*C (|Rugby|, |Masculino|) |True|
  * [(A |Juan| |Masculino| 1920 |Argentina| 1 [(|Football|, 35), (|Rugby|, 10)]),
  * (A |Jorge| |Masculino| 1930 |Argentina| 2 [(|Football|, 32), (|Rugby|, 20)]),
  * (A |Jackson| |Masculino| 1935 |Escocia| 6 [(|Basket|, 25), (|Football|, 40), (|Rugby|, 5)])]
  * [1, 6] [(1, |True|), (6, |True|)]
 */
-std::ostream &operator<<(std::ostream &os, const Competencia &c) {
+void Competencia::mostrar(std::ostream &os) const {
     int i = 0;
     /*C (|Rugby|, |Masculino|) |True| */
-    os << "C" << "(|" << c.categoria().first << "|, " << "|" << c.categoria().second << "|) ";
-    os << "|" << c.finalizada() << "| ";
+    os << "C" << "(|" << categoria().first << "|, " << "|" << categoria().second << "|) ";
+    os << "|" << boolToString(finalizada()) << "| ";
     os << "[";
     /*[(A |Juan| |Masculino| 1920 |Argentina| 1 [(|Football|, 35), (|Rugby|, 10)]), (A |Jorge| |Masculino| 1930 |Argentina| 2 [(|Football|, 32), (|Rugby|, 20)]), (A |Jackson| |Masculino| 1935 |Escocia| 6 [(|Basket|, 25), (|Football|, 40), (|Rugby|, 5)])]*/
-    while (i < c.participantes().size()){
+    while (i < participantes().size()){
         os << "(";
-        os << c.participantes()[i];
-        if(i < c.participantes().size()-1)
+        os << participantes()[i];
+        if(i < participantes().size()-1)
             os << "), ";
         else os << ")] ";
         i++;
@@ -130,24 +118,65 @@ std::ostream &operator<<(std::ostream &os, const Competencia &c) {
     i = 0;
     /*[1, 6]*/
     os << "[";
-    while(i < c.ranking().size()) {
-        os << c.ranking()[i].ciaNumber();
-        if(i < c.ranking().size()-1)
+    while(i < ranking().size()) {
+        os << ranking()[i].ciaNumber();
+        if(i < ranking().size()-1)
             os << ", ";
         else os << "] ";
         i++;
     }
+    if(!_finalizada) os << "] ";
     i = 0;
     /*[(1, |True|), (6, |True|)]*/
     os << "[";
-    while(i < c.lesTocoControlAntiDoping().size()){
-        os << "(" << c.lesTocoControlAntiDoping()[i].ciaNumber();
-        //os << ", |" << leDioPositivo(c.lesTocoControlAntiDoping()[i]) << "|)";
-        if(i < c.lesTocoControlAntiDoping().size()-1)
+    while(i < lesTocoControlAntiDoping().size()){
+        os << "(" << lesTocoControlAntiDoping()[i].ciaNumber();
+        os << ", |" << boolToString(leDioPositivo(lesTocoControlAntiDoping()[i])) << "|)";
+        if(i < lesTocoControlAntiDoping().size()-1)
+            os << ", ";
+        else os << "]";
+        i++;
+    }
+    if(!_finalizada) os << "] ";
+}
+
+void Competencia::guardar(std::ostream &os) const {
+    int i = 0;
+    /*C (|Rugby|, |Masculino|) |True| */
+    os << "C" << "(|" << _categoria.first << "|, " << "|" << _categoria.second << "|) ";
+    os << "|" << boolToString(_finalizada) << "| ";
+    os << "[";
+    /*[(A |Juan| |Masculino| 1920 |Argentina| 1 [(|Football|, 35), (|Rugby|, 10)]), (A |Jorge| |Masculino| 1930 |Argentina| 2 [(|Football|, 32), (|Rugby|, 20)]), (A |Jackson| |Masculino| 1935 |Escocia| 6 [(|Basket|, 25), (|Football|, 40), (|Rugby|, 5)])]*/
+    while (i < _participantes.size()){
+        os << "(";
+        os << _participantes[i];
+        if(i < _participantes.size()-1)
+            os << "), ";
+        else os << ")] ";
+        i++;
+    }
+    i = 0;
+    /*[1, 6]*/
+    os << "[";
+    while(i < _ranking.size()) {
+        os << _ranking[i].ciaNumber();
+        if(i < _ranking.size()-1)
+            os << ", ";
+        else os << "] ";
+        i++;
+    }
+    if(!_finalizada) os << "] ";
+    i = 0;
+    /*[(1, |True|), (6, |True|)]*/
+    os << "[";
+    while(i < _lesTocoControlAntiDoping.size()){
+        os << "(" << _lesTocoControlAntiDoping[i].first.ciaNumber();
+        os << ", |" << boolToString(_lesTocoControlAntiDoping[i].second) << "|)";
+        if(i < _lesTocoControlAntiDoping.size()-1)
             os << ", ";
         else os << "]";
     }
-    return os;
+    if(!_finalizada) os << "] ";
 }
 
 /*C (|Rugby|, |Masculino|) |True|
@@ -156,8 +185,8 @@ std::ostream &operator<<(std::ostream &os, const Competencia &c) {
  * (A |Jackson| |Masculino| 1935 |Escocia| 6 [(|Basket|, 25), (|Football|, 40), (|Rugby|, 5)])]
  * [1, 6] [(1, |True|), (6, |True|)]
 */
-std::istream &operator>>(std::istream &is, Competencia &c) {
-    string deporte,gen,finalizada,auxiliar;
+void Competencia::cargar(std::istream &is) {
+    string gen,finalizada,auxiliar;
     Atleta a("Bob esponja", Genero::Masculino, 0, "Pais falso", 0);
     vector<Atleta> as;
     vector<int> posiciones;
@@ -167,15 +196,17 @@ std::istream &operator>>(std::istream &is, Competencia &c) {
     int i = 0;
 
     is.ignore(4);
-    getline(is,deporte,'|');
+    getline(is,_categoria.first,'|');
     is.ignore(3);
     getline(is,gen,'|');
+    _categoria.second = stringToGenero(gen);
     is.ignore(3);
     getline(is,finalizada,'|');
     is.ignore(3);
+    //cargamos los participantes
     while(is.peek() == 'A') {
         is >> a;
-        as.push_back(a);
+        _participantes.push_back(a);
         is.ignore();
         if(is.peek() == ',') is.ignore(3);
         else is.ignore(2);
@@ -206,9 +237,16 @@ std::istream &operator>>(std::istream &is, Competencia &c) {
         if(is.peek() == ',') is.ignore(2);
     }
     is.ignore();
-    Competencia comp(deporte,stringToGenero(gen),as);
-    c = comp;
-    if(finalizada == "True") c.finalizar(posiciones,ys);
+    if(finalizada == "True") finalizar(posiciones,ys);
+}
+
+std::ostream &operator<<(std::ostream &os, const Competencia &c) {
+    c.mostrar(os);
+    return os;
+}
+
+std::istream &operator>>(std::istream &is, Competencia &c) {
+    c.cargar(is);
     return is;
 }
 
@@ -354,6 +392,11 @@ int Competencia::cuentaDopado(const Atleta &a, const vector<Atleta> &as) const{
 bool stringToBool(string s){
     if(s == "True") return true;
     else return false;
+}
+
+string boolToString(bool b){
+    if(b == true) return "True";
+    else return "False";
 }
 
 //FIN AUXILIARES

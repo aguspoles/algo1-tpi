@@ -77,73 +77,56 @@ void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
         _deportes.push_back(dep);
         ordenar(_deportes);
     }
-    ordenar(_deportes);
-}
-
-void Atleta::mostrar(std::ostream &os) const {
-    os << *this;
-}
-
-void Atleta::guardar(std::ostream &os) const {
-    os << *this;
-}
-
-void Atleta::cargar(std::istream &is) {
-    is >> *this;
 }
 
 //A |Liu Song| |Masculino| 1972 |China| 123 [(|Tenis de Mesa|, 90)]
-std::ostream &operator<<(std::ostream &os, const Atleta &a) {
-    os << "A " << "|" << a.nombre() << "| " << "|" << a.genero() << "| ";
-    os << a.anioNacimiento() << " " << "|" << a.nacionalidad() << "| ";
-    os << a.ciaNumber() << " ";
+void Atleta::mostrar(std::ostream &os) const {
+    os << "A " << "|" << nombre() << "| " << "|" << genero() << "| ";
+    os << anioNacimiento() << " " << "|" << nacionalidad() << "| ";
+    os << ciaNumber() << " ";
     os << "[";
     int i = 0;
-    while (i < a.deportes().size()) {
-        os << "(|" << a.deportes()[i] << "|," << a.capacidad(a.deportes()[i]) << ")";
-        if (i < a.deportes().size() - 1)
+    while (i < deportes().size()) {
+        os << "(|" << deportes()[i] << "|," << capacidad(deportes()[i]) << ")";
+        if (i < deportes().size() - 1)
             os << ", ";
         i++;
     }
     os << "]";
-    return os;
 }
 
-//cargar
 //A |Liu Song| |Masculino| 1972 |China| 123 [(|Tenis de Mesa|, 90)]
-std::istream &operator>>(std::istream &is, Atleta &a) {
-    string nombre, genero, nacionalidad;
-    int ciaNumber, anioNacimiento;
-    vector<pair<Deporte, int>> deportes;
-
-    is.ignore(3);//A >> ' ' >> '|'
-    getline(is, nombre, '|');
-    is.ignore(2);//' ' >> '|'
-    getline(is, genero, '|');
-    is >> anioNacimiento;
-    is.ignore(2);//' ' >> '|'
-    getline(is, nacionalidad, '|');
-    is >> ciaNumber;
-    is.ignore();//' '
-    is >> deportes;
-    string d, c;
-    Genero g = stringToGenero(genero);
-    Atleta atleta(nombre, g, anioNacimiento, nacionalidad, ciaNumber);
-
+void Atleta::guardar(std::ostream &os) const {
+    os << "A " << "|" << _nombre << "| " << "|" << _genero << "| ";
+    os << _anioNacimiento << " " << "|" << _nacionalidad << "| ";
+    os << _ciaNumber << " ";
+    os << "[";
     int i = 0;
-    while (i < deportes.size()) {
-        atleta.entrenarNuevoDeporte(deportes[i].first, deportes[i].second);
+    while (i < _deportes.size()) {
+        os << "(|" << _deportes[i].first << "|," << _deportes[i].second << ")";
+        if (i < _deportes.size() - 1)
+            os << ", ";
         i++;
     }
-
-    a = atleta;
-    return is;
+    os << "]";
 }
 
-//cargar deportes
-//[(|Tenis de Mesa|, 90), (|Basket|, 80)]
-std::istream &operator>>(std::istream &is, vector<pair<Deporte, int>> &vs) {
+//A |Liu Song| |Masculino| 1972 |China| 123 [(|Tenis de Mesa|, 90)]
+void Atleta::cargar(std::istream &is) {
+    string genero;
+    is.ignore(3);//A >> ' ' >> '|'
+    getline(is, _nombre, '|');
+    is.ignore(2);//' ' >> '|'
+    getline(is, genero, '|');
+    _genero = stringToGenero(genero);
+    is >> _anioNacimiento;
+    is.ignore(2);//' ' >> '|'
+    getline(is, _nacionalidad, '|');
+    is >> _ciaNumber;
+    is.ignore();//' '
+    //cargamos deportes
     string d, c;
+    _deportes.clear();
     is.ignore();//'['
     while (is.peek() != ']') {
         is.ignore(2);//'(' >> '|'
@@ -153,11 +136,21 @@ std::istream &operator>>(std::istream &is, vector<pair<Deporte, int>> &vs) {
         int h = atoi(c.c_str());
         if (is.peek() == ',') is.ignore(2);//',' >> ' '
         pair<Deporte, int> p = make_pair(d, h);
-        vs.push_back(p);
+        _deportes.push_back(p);
     }
     is.ignore();//']'
+}
+
+std::ostream &operator<<(std::ostream &os, const Atleta &a) {
+    a.mostrar(os);
+    return os;
+}
+
+std::istream &operator>>(std::istream &is, Atleta &a) {
+    a.cargar(is);
     return is;
 }
+
 
 bool Atleta::operator==(const Atleta &a) const {
     bool res = false;
