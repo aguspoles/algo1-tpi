@@ -260,6 +260,7 @@ TEST(jjoo_tests, sequias_olimpicas_y_los_mas_fracasados) {
     jo.transcurrirDia();//Sequia: 5 - 2 - 1
     jo._cronograma[6][0].finalizar({1}, {});
     jo.transcurrirDia();//Sequia: 6 - 1 - 2
+    vector<Pais> res = jo.sequiaOlimpica();
     ASSERT_TRUE(mismos(jo.sequiaOlimpica(), {paises[0], paises[2]}));
 
     jo._cronograma[7][0].finalizar({0}, {});

@@ -4,9 +4,22 @@
 #include "../include/jjoo.h"
 
 int main() {
-    ifstream entrada("entrada.txt");
-    ofstream salida("salida.txt");
 
+    ofstream salida("C:\\Users\\rocio\\Documents\\GitHub\\algo1-tpi\\salida.txt");
+    Atleta a("jose",Masculino,1994,"Grecia",10);
+    Atleta b("Nole", Genero::Masculino, 1983, "Serbia", 5);
+
+    a.guardar(salida);
+    salida.close();
+
+    ifstream entrada("C:\\Users\\rocio\\Documents\\GitHub\\algo1-tpi\\salida.txt");
+    b.cargar(entrada);
+    entrada.close();
+
+
+    if(a == b) cout << "bien";
+
+    /*
     Atleta a("jose",Masculino,1994,"Grecia",10);
     Atleta b("hb",Femenino,1800,"holanda",20);
     Competencia c("Foot", Masculino, {a,b});
@@ -21,5 +34,6 @@ int main() {
 
     entrada.close();
     salida.close();
+     */
     return 0;
 }

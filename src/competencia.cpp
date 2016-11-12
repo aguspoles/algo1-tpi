@@ -251,15 +251,15 @@ std::istream &operator>>(std::istream &is, Competencia &c) {
 }
 
 bool Competencia::operator==(const Competencia &c) const {
-    if(_categoria != c.categoria())
+    if(_categoria != c._categoria)
         return false;
-    if(!mismosParticipantes(_participantes,c.participantes()))
+    if(!mismosParticipantes(_participantes,c._participantes))
         return false;
-    if(_finalizada != c.finalizada())
+    if(_finalizada != c._finalizada)
         return false;
-    if(_ranking != c.ranking())
+    if(_ranking != c._ranking)
         return false;
-    if(!mismosAntiDoping(_lesTocoControlAntiDoping,c.lesTocoControlAntiDoping()))
+    if(!mismosAntiDoping(_lesTocoControlAntiDoping,c._lesTocoControlAntiDoping))
         return false;
     return true;
 }
@@ -357,13 +357,14 @@ int Competencia::cuentaParticipante(const Atleta &a, const vector<Atleta> &as) c
     return  cuenta;
 }
 
-bool Competencia::mismosAntiDoping(const vector<pair<Atleta,bool>> &xs, const vector<Atleta> &ys) const{
+bool Competencia::mismosAntiDoping(const vector<pair<Atleta,bool>> &xs, const vector<pair<Atleta,bool>> &ys) const{
     int i = 0;
     bool res = true;
     while(i < xs.size() && res){
-        if(cuentaDopado(xs[i].first,primeros(xs)) == cuentaDopado(xs[i].first,ys))
+        if(cuentaDopado(xs[i].first,primeros(xs)) == cuentaDopado(xs[i].first,primeros(ys)))
                 res = true;
         else res = false;
+        i++;
     }
     return res;
 }

@@ -52,7 +52,7 @@ int Atleta::capacidad(const Deporte &d) const {
 }
 
 Deporte Atleta::especialidad() const {
-    int i = 1;
+    int i = 0;
     Deporte max = _deportes[0].first;
     while (i < _deportes.size() - 1) {
         if (_deportes[i].second >= _deportes[i + 1].second)
@@ -155,22 +155,22 @@ std::istream &operator>>(std::istream &is, Atleta &a) {
 bool Atleta::operator==(const Atleta &a) const {
     bool res = false;
     int i = 0;
-    if (_nombre != a.nombre())
+    if (_nombre != a._nombre)
         return false;
-    if (_anioNacimiento != a.anioNacimiento())
+    if (_anioNacimiento != a._anioNacimiento)
         return false;
-    if (_ciaNumber != a.ciaNumber())
+    if (_ciaNumber != a._ciaNumber)
         return false;
-    if (_genero != a.genero())
+    if (_genero != a._genero)
         return false;
-    if (_nacionalidad != a.nacionalidad())
+    if (_nacionalidad != a._nacionalidad)
         return res;
-    if (_deportes.size() != a.deportes().size())
+    if (_deportes.size() != a._deportes.size())
         return res;
     while (i < _deportes.size()) {
-        if (_deportes[i].first != (a.deportes())[i])
+        if (_deportes[i].first != a._deportes[i].first)
             return res;
-        else if (_deportes[i].second != a.capacidad(a.deportes()[i]))
+        else if (_deportes[i].second != a._deportes[i].second)
             return res;
         i++;
     }

@@ -23,7 +23,7 @@ private:
     bool pertenece(const Atleta &a, const vector<pair<Atleta,bool>> &vs);
     bool mismosParticipantes(const vector<Atleta> &xs, const vector<Atleta> &ys) const;
     int cuentaParticipante(const Atleta &a, const vector<Atleta> &as) const;
-    bool mismosAntiDoping(const vector<pair<Atleta,bool>> &xs, const vector<Atleta> &ys) const;
+    bool mismosAntiDoping(const vector<pair<Atleta,bool>> &xs, const vector<pair<Atleta,bool>> &ys) const;
     vector<Atleta> primeros(const vector<pair<Atleta,bool>> &ps) const;
     int cuentaDopado(const Atleta &a, const vector<Atleta> &as) const;
 

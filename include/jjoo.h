@@ -32,11 +32,26 @@ private:
     vector<pair<Atleta,Categoria>> ganadoresPorCategoria(const vector<vector<Competencia>> &cs, const int &dia) const;
     vector<pair<int,bool>> sacoLosDeDoping(Competencia c, Pais p);
     vector<int> sacoLosDeRanking(Competencia c, Pais p);
-    Atleta losMasParticipantes(vector<Atleta> as, vector<Competencia> cs) const;
-    vector<Atleta> losAtletasDelPais(Competencia c, Pais p) const;
+    vector<Atleta> losMasParticipantes(vector<Atleta> as, vector<Competencia> cs) const;
+    vector<Atleta> losAtletasDelPais(vector<Atleta> as, Pais p) const;
     int cuentaParticipaciones(Atleta a, vector<Competencia> cs)const;
-    bool pertenece(Atleta a, Competencia c)const;
+    int maxParticipaciones() const;
     bool noGanoMedallas(Atleta a, Competencia c)const;
+    vector<Pais> paises() const;
+    vector<Pais> sacarRepetidos(vector<Pais> &ps) const;
+    int cuentaPais(Pais p, vector<Pais> ps) const;
+    int masDiasSinMedallas(Pais p)const;
+    bool ganoMedallaEseDia(Pais p, int i, int j)const;
+    int maxDif(vector<int>is)const;
+    int maxDiasSinMedallas()const;
+    vector<Pais> losMejoresPaises() const;
+    Pais elMejorDelDia(int d)const;
+    int cuentaOro(Pais p, int d)const;
+    bool alguienGanoOro(int d)const;
+    bool siguenUnOrden(vector<Pais> ps)const;
+    bool paraAtras(vector<Pais> ps)const;
+    bool paraAdelante(vector<Pais> ps)const;
+    void ordenarMedallero(vector<pair<Pais, vector<int> >> &vs)const;
 
 public:
     JJOO(const int &a, const vector<Atleta> &as, const vector<vector<Competencia> > &cs);

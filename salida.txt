@@ -1,0 +1,1 @@
+A |jose| |Masculino| 1994 |Grecia| 10 [(|Tenis|,50)]
