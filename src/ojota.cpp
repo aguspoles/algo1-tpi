@@ -6,11 +6,15 @@
 Atleta atletaProdigio(JJOO j){
     int i = 0;
     int max = 0;
+    vector<Competencia> cs = j.competenciasFinalizadasConOroEnPodio();
+    int r;
     Atleta res("Bob esponja", Genero::Masculino, 0, "Pais falso", 0);
-    while(i < j.competenciasFinalizadasConOroEnPodio().size()){
-        if(j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0].anioNacimiento() > max) {
-            res = j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0];
-            max = j.competenciasFinalizadasConOroEnPodio()[i].ranking()[0].anioNacimiento();
+
+    while(i < cs.size()){
+        r = cs[i].ranking()[0].anioNacimiento();
+        if(r > max) {
+            res = cs[i].ranking()[0];
+            max = r;
         }
         i++;
     }

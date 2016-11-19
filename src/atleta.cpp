@@ -52,14 +52,14 @@ int Atleta::capacidad(const Deporte &d) const {
 }
 
 Deporte Atleta::especialidad() const {
-    int i = 0;
-    Deporte max = _deportes[0].first;
-    while (i < _deportes.size() - 1) {
-        if (_deportes[i].second >= _deportes[i + 1].second)
-            max = _deportes[i].first;
+    int i = 1;
+    pair<Deporte,int> max = _deportes[0];
+    while (i < _deportes.size()) {
+        if (_deportes[i].second > max.second)
+            max = _deportes[i];
         i++;
     }
-    return max;
+    return max.first;
 }
 
 void Atleta::entrenarNuevoDeporte(const Deporte &d, const int &c) {
