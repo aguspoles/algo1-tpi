@@ -219,12 +219,13 @@ void JJOO::transcurrirDia() {
     int i = 0;
     vector<int> is;
     vector<pair<int, bool>> ds;
-    pair<int, bool> l = make_pair(0, false);
-    ds.push_back(l);
+    pair<int, bool> l;
 
     while (i < _cronograma[_jornadaActual - 1].size()) {
         if (!(_cronograma[_jornadaActual - 1][i].finalizada())) {
             is = ciaNumbers(_cronograma[_jornadaActual - 1][i].participantes());
+            l = make_pair(is[0], true);
+            ds.push_back(l);
             _cronograma[_jornadaActual - 1][i].finalizar(is, ds);
         }
         i++;
