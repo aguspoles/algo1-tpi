@@ -155,7 +155,7 @@ TEST(jjoo_tests, competencias_al_transcurrir_dos_dias) {
     Competencia comp_dos_segundo_dia = Competencia(deportes[3], Genero::Masculino, participantes_cuarta);
 
 
-    JJOO jo = JJOO(2016, atletas, {{comp_uno_primer_dia, comp_dos_primer_dia},
+    JJOO jo = JJOO(2016, atletas, {{comp_uno_primer_dia,  comp_dos_primer_dia},
                                    {comp_uno_segundo_dia, comp_dos_segundo_dia}});
 
     ASSERT_TRUE(mismos(jo.competencias(),
@@ -275,6 +275,44 @@ TEST(jjoo_tests, sequias_olimpicas_y_los_mas_fracasados) {
     ASSERT_TRUE(mismos(jo.dePaseo(), {atletas_para_el_juego[3]}));
 }
 
+void sonMedallerosEquivalentes(const vector<pair<Pais, vector<int> > > &medallero,
+                               const vector<pair<Pais, vector<int> > > &joMedallero) {
+    // misma cantidad de paises
+    ASSERT_TRUE(joMedallero.size() == medallero.size());
+
+    // mismos paises
+    vector<Pais> paisesEnMedallero;
+    vector<Pais> paisesEnJoMedallero;
+    for (int l = 0; l < medallero.size(); ++l) {
+        paisesEnMedallero.push_back(medallero[l].first);
+        paisesEnJoMedallero.push_back(joMedallero[l].first);
+    }
+    sort(paisesEnMedallero.begin(), paisesEnMedallero.end());
+    sort(paisesEnJoMedallero.begin(), paisesEnJoMedallero.end());
+    ASSERT_TRUE(paisesEnMedallero == paisesEnJoMedallero);
+
+    // mismas medallas por pais
+    for (int j = 0; j < medallero.size(); ++j) {
+        for (int i = 0; i < joMedallero.size(); ++i) {
+            if (medallero[j].first == joMedallero[i].first) {
+                for (int k = 0; k < 3; ++k) {
+                    ASSERT_EQ(medallero[j].second[k], joMedallero[i].second[k]);
+                }
+            }
+        }
+    }
+
+    // medallero ordenado
+    for (int i = 0; i < joMedallero.size() - 1; ++i) {
+        vector<int> medallasActual = joMedallero[i].second;
+        vector<int> medallasSig = joMedallero[i + 1].second;
+
+        ASSERT_TRUE(medallasActual[0] > medallasSig[0] ||
+                    (medallasActual[0] == medallasSig[0] && medallasActual[1] > medallasSig[1]) ||
+                    (medallasActual[0] == medallasSig[0] && medallasActual[1] == medallasSig[1] &&
+                     medallasActual[2] >= medallasSig[2]));
+    }
+}
 
 TEST(jjoo_tests, hay_un_patron) {
     //Nota util:    Los indices de los paises se corresponden con el indice de los atletas, si el atleta 0 gano una medalla es porque el pais 0 gano una medalla
@@ -326,11 +364,11 @@ TEST(jjoo_tests, hay_un_patron) {
     jo.transcurrirDia();
 
     ASSERT_TRUE(jo.uyOrdenadoAsiHayUnPatron());
+
     vector<pair<Pais, vector<int> > > medallero = {std::make_pair(paises[0], (std::vector<int>) {4, 0, 0}),
                                                    std::make_pair(paises[1], (std::vector<int>) {3, 0, 0}),
                                                    std::make_pair(paises[2], (std::vector<int>) {3, 0, 0})};
-
-    ASSERT_TRUE(jo.medallero() == medallero);
+    sonMedallerosEquivalentes(medallero, jo.medallero());
 
     //Boicot a Argentina en el oro que gano en la cuarta fecha de los juegos
     jo.boicotPorDisciplina(std::make_pair(deportes[3], Genero::Femenino), paises[0]);
@@ -339,11 +377,9 @@ TEST(jjoo_tests, hay_un_patron) {
                  std::make_pair(paises[1], (std::vector<int>) {3, 0, 0}),
                  std::make_pair(paises[2], (std::vector<int>) {3, 0, 0})};
 
-    ASSERT_TRUE(jo.medallero() == medallero);
+    sonMedallerosEquivalentes(medallero, jo.medallero());
 
-    ASSERT_FALSE(
-            jo.uyOrdenadoAsiHayUnPatron()); //En la cuarta fecha nadie gano nada, se deberia omitir
-
+    ASSERT_FALSE(jo.uyOrdenadoAsiHayUnPatron()); //En la cuarta fecha nadie gano nada, se deberia omitir
 }
 
 TEST(jjoo_tests, liu_song) {
